@@ -8,6 +8,7 @@ import { Ingresso } from 'src/entity/ingresso.entity';
 @Injectable()
 export class EmpresaService {
 
+
   constructor(
     @InjectRepository(Empresa)
     private readonly EmpresaRepository: Repository<Empresa>,
@@ -26,6 +27,14 @@ export class EmpresaService {
     return await this.connection.query(
       `
         exec showme.criarIngresso '${idShow}','${email}'
+      `
+    )
+  }
+
+  async excluirEmpresa(email: string, cnpj: string) {
+    return await this.connection.query(
+      `
+        exec showme.excluirEmpresa '${cnpj}','${email}'
       `
     )
   }
