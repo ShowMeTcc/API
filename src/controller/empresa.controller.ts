@@ -63,5 +63,30 @@ async deletarEmpresa(
         }
       } 
 }
-  
+  @Post('senha')
+  async mudarSenha(
+    @Body ('senha') senha:string,
+    @Body ('email') email:string,
+    @Body ('cnpj') cnpj:string
+  ) : Promise<any>
+  {
+    try 
+    {
+      console.log("try")
+      return await this.empresaService.alterarSenhaEmpresa(senha,email,cnpj)
+    }
+    catch (error)
+    {
+      console.log("catch")
+      if (error instanceof QueryFailedError) {
+          console.log("dentro if")
+          console.error('Erro ao executar a consulta:', error.message);
+          return BadRequestException;
+      } else {
+        console.log("else")
+          console.error('Erro desconhecido:', error);
+          return BadRequestException;
+      }
+    } 
+  }
 }

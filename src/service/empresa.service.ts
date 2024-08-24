@@ -38,4 +38,15 @@ export class EmpresaService {
       `
     )
   }
+
+
+  async alterarSenhaEmpresa(email:string, senha:string, cnpj:string)
+  {
+    console.log("metodo")
+    return await this.connection.query(
+      `
+        exec showme.atualizarSenhaEmpresa '${senha}','${cnpj}', '${email}'
+      `
+    )
+  }
 }
