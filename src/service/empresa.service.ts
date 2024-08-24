@@ -22,10 +22,10 @@ export class EmpresaService {
     )
   }
 
-  async criarIngresso():Promise<void> {
+  async criarIngresso(email:String, idShow:Number):Promise<void> {
     return await this.connection.query(
       `
-        exec showme. 
+        exec showme.criarIngresso '${idShow}','${email}'
       `
     )
   }
