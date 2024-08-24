@@ -1,7 +1,9 @@
 import { Controller, Post, Body, Delete, Put, Get, BadRequestException, Patch} from '@nestjs/common';
+import { ExceptionsHandler } from '@nestjs/core/exceptions/exceptions-handler';
 import { promises } from 'dns';
 import { Cliente } from 'src/entity/cliente.entity';
 import { ClienteService } from 'src/service/cliente.services';
+import { QueryFailedError } from 'typeorm';
 
 
 @Controller('clientes')
@@ -101,11 +103,19 @@ export class AppController {
     @Body('senha') senha: string,
     ): Promise<any>
   {
-
-    var cliente =  await this.clienteService.validarCliente(email,senha);
-    if (cliente == null)
+    try {
+      var cliente =  await this.clienteService.validarCliente(email,senha);
+      return cliente;
+  } catch (error) {
+      if (error instanceof QueryFailedError) {
+          console.error('Erro ao executar a consulta:', error.message);
+          return BadRequestException;
+      } else {
+          console.error('Erro desconhecido:', error);
+          return BadRequestException;
+      }
       return BadRequestException;
-    return cliente;
+  }
   
   }
 
