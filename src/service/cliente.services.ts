@@ -43,7 +43,7 @@ export class ClienteService {
   async deletarCliente(cpf: string, email: string): Promise<void> {
     try {
       const queryResult = await this.connection.query(
-        `EXEC showme.deletarCliente @cpf=$1, @email=$2`,
+        `EXEC showme.deletarCliente '${cpf}', '${email}'`,
         [cpf, email]
       );
       if (queryResult.rowsAffected[0] === 0) {
@@ -57,7 +57,7 @@ export class ClienteService {
   async atualizarNomeCliente(nome: string, cpf: string, email: string): Promise<void> {
     try {
       const queryResult = await this.connection.query(
-        `EXEC showme.atualizarNomeCliente @nome=$1, @cpf=$2, @email=$3`,
+        `EXEC showme.atualizarNomeCliente '${nome}', '${cpf}', '${email}'`,
         [nome, cpf, email]
       );
       if (queryResult.rowsAffected[0] === 0) {
