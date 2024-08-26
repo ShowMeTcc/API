@@ -69,4 +69,16 @@ export class EmpresaService {
       throw new BadRequestException('Erro ao alterar a senha da empresa');
     }
   }
+
+
+  async validarEmpresa (email:string, senha:string)
+  {
+    return await this.connection.query(
+      `
+        exec showme.validarEmpresa '${email}','${senha}'
+      `
+    )
+  }
+
+
 }

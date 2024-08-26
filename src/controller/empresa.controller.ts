@@ -64,4 +64,16 @@ export class EmpresaController {
       throw new BadRequestException('Erro ao alterar a senha da empresa');
     }
   }
+
+  @Post('validar')
+  async verificarLogin(@Body('email') email: string, @Body('senha') senha: string): Promise<any> {
+    try {
+      return await this.empresaService.validarEmpresa(email, senha);
+    } catch (error) {
+      throw new BadRequestException('Erro ao validar Empresa');
+    }
+  }
+
+
+
 }
