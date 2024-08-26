@@ -79,6 +79,19 @@ export class EmpresaService {
       `
     )
   }
+  async buscarShows(email: string) {
+    try {
+      const result = await this.connection.query(
+        `
+        exec showme.buscarShowsPorEmpresa '${email}'
+      `
+      )
+      return result;
+    } catch (error) {
+      console.error('Erro ao buscar shows:', error.message);
+      throw new BadRequestException('Erro ao buscar shows');
+    }
+  }
 
 
 }
