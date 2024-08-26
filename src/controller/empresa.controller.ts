@@ -63,17 +63,16 @@ async deletarEmpresa(
         }
       } 
 }
-  @Post('senha')
+  @Put('senha')
   async mudarSenha(
     @Body ('senha') senha:string,
-    @Body ('email') email:string,
-    @Body ('cnpj') cnpj:string
+    @Body ('email') email:string
   ) : Promise<any>
   {
     try 
     {
       console.log("try")
-      return await this.empresaService.alterarSenhaEmpresa(senha,email,cnpj)
+      return await this.empresaService.alterarSenhaEmpresa(senha,email)
     }
     catch (error)
     {

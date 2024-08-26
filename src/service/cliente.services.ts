@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException, BadRequestException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository, Connection } from 'typeorm';
 import { Cliente } from '../entity/cliente.entity';
@@ -8,18 +8,18 @@ export class ClienteService {
   constructor(
     @InjectRepository(Cliente)
     private readonly clienteRepository: Repository<Cliente>,
-    private readonly connection: Connection, // Injetar a conexão do TypeORM
+    private readonly connection: Connection,
   ) {}
 
-
-    async pesquisarPorEmail(email:string):Promise<void>{
-      return await this.connection.query(
-        `
-          select * from showme.Cliente where email = '${email}'
-        `
-      )
+  async pesquisarPorEmail(email: string): Promise<any> {
+    const result = await this.connection.query(
+      `SELECT * FROM showme.Cliente WHERE email = $1`, [email]
+    );
+    if (result.length === 0) {
+      throw new NotFoundException('Cliente não encontrado');
     }
-
+    return result;
+  }
 
   async incluirCliente(
     nome: string,
@@ -29,42 +29,46 @@ export class ClienteService {
     senha: string,
     cpf: string,
     cep: string,
-    dataNascimento: Date,
+    dataNascimento: string,
   ): Promise<void> {
-    await this.connection.query(
-      `
-      EXEC showme.incluirCliente 
-      '${nome}', '${sobrenome}', '${email}','${telefone}','${senha}','${cpf}','${cep}','${dataNascimento}'
-          
-      `,
-      [nome, sobrenome, email, telefone, senha, cpf, cep, dataNascimento], 
-  );
+    try {
+      await this.connection.query(
+        `EXEC showme.incluirCliente '${nome}', '${sobrenome}', '${email}','${telefone}', '${senha}', '${cpf}', '${cep}', '${dataNascimento}'`,
+      );
+    } catch (error) {
+      throw new BadRequestException('Erro ao incluir cliente');
+    }
   }
-  async deletarCliente(cpf: string, email: string): Promise<void> {
-    const queryResult = await this.connection.query(
-      `
-      EXEC showme.deletarCliente '${cpf}','${email}'
-      `,
-      [cpf, email],
-    );
 
-    if (queryResult && queryResult.rowsAffected && queryResult.rowsAffected[0] === 0) {
-      throw new Error('Cliente inexistente ou inválido');
+  async deletarCliente(cpf: string, email: string): Promise<void> {
+    try {
+      const queryResult = await this.connection.query(
+        `EXEC showme.deletarCliente @cpf=$1, @email=$2`,
+        [cpf, email]
+      );
+      if (queryResult.rowsAffected[0] === 0) {
+        throw new NotFoundException('Cliente inexistente ou inválido');
+      }
+    } catch (error) {
+      throw new BadRequestException('Erro ao deletar cliente');
     }
   }
 
   async atualizarNomeCliente(nome: string, cpf: string, email: string): Promise<void> {
-    const queryResult = await this.connection.query(
-      `
-      EXEC showme.atualizarNomeCliente '${nome}','${cpf}','${email}'
-      `,
-      [nome, cpf, email],
-    );
-
-    if (queryResult && queryResult.rowsAffected && queryResult.rowsAffected[0] === 0) {
-      throw new Error('CPF inexistente e/ou inválido');
+    try {
+      const queryResult = await this.connection.query(
+        `EXEC showme.atualizarNomeCliente @nome=$1, @cpf=$2, @email=$3`,
+        [nome, cpf, email]
+      );
+      if (queryResult.rowsAffected[0] === 0) {
+        throw new NotFoundException('CPF inexistente e/ou inválido');
+      }
+    } catch (error) {
+      throw new BadRequestException('Erro ao atualizar nome do cliente');
     }
   }
+
+
 
   async atualizarSobrenomeCliente(sobrenome: string, cpf: string, email: string): Promise<void> {
     const queryResult = await this.connection.query(
