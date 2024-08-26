@@ -1,52 +1,72 @@
-// Empresa.service.ts
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository, Connection } from 'typeorm';
-import { Empresa } from 'src/entity/Empresa.entity'
+import { Empresa } from 'src/entity/empresa.entity';
 import { Ingresso } from 'src/entity/ingresso.entity';
 
 @Injectable()
 export class EmpresaService {
-
-
   constructor(
     @InjectRepository(Empresa)
-    private readonly EmpresaRepository: Repository<Empresa>,
+    private readonly empresaRepository: Repository<Empresa>,
     private readonly connection: Connection,
   ) {}
 
-  async incluirEmpresa(cnpj:string,nome:string, email:string,telefone:string,senha:string):Promise<void>{
-    return await this.connection.query(
-      `
-        exec showme.incluirEmpresa '${cnpj}', '${nome}', '${email}','${telefone}', '${senha}'
-      `
-    )
+  async incluirEmpresa(cnpj: string, nome: string, email: string, telefone: string, senha: string): Promise<void> {
+    try {
+      await this.connection.query(
+        `
+          EXEC showme.incluirEmpresa '${cnpj}', '${nome}', '${email}', '${telefone}', '${senha}'
+        `,
+        [cnpj, nome, email, telefone, senha]
+      );
+    } catch (error) {
+      console.error('Erro ao incluir empresa:', error.message);
+      throw new BadRequestException('Erro ao incluir a empresa');
+    }
   }
 
-  async criarIngresso(email:String, idShow:Number):Promise<void> {
-    return await this.connection.query(
-      `
-        exec showme.criarIngresso '${idShow}','${email}'
-      `
-    )
+  async criarIngresso(email: string, idShow: number): Promise<any> {
+    try {
+      const result = await this.connection.query(
+        `
+          EXEC showme.criarIngresso '${email}','${idShow}'
+        `,
+        [email, idShow]
+      );
+      return result;
+    } catch (error) {
+      console.error('Erro ao criar ingresso:', error.message);
+      throw new BadRequestException('Erro ao criar o ingresso');
+    }
   }
 
-  async excluirEmpresa(email: string, cnpj: string) {
-    return await this.connection.query(
-      `
-        exec showme.excluirEmpresa '${cnpj}','${email}'
-      `
-    )
+  async excluirEmpresa(email: string, cnpj: string): Promise<void> {
+    try {
+      await this.connection.query(
+        `
+          EXEC showme.excluirEmpresa '${cnpj}', '${email}'
+        `,
+        [cnpj, email]
+      );
+    } catch (error) {
+      console.error('Erro ao excluir a empresa:', error.message);
+      throw new BadRequestException('Erro ao excluir a empresa');
+    }
   }
 
+  async alterarSenhaEmpresa(email: string, senha: string): Promise<void> {
+    try {
+      const result = await this.connection.query(
+        `
+          EXEC showme.atualizarSenhaEmpresa '${senha}', '${email}'
+        `,
+        [senha, email]
+      );
 
-  async alterarSenhaEmpresa(email:string, senha:string)
-  {
-    console.log("metodo")
-    return await this.connection.query(
-      `
-        exec showme.atualizarSenhaEmpresa '${senha}', '${email}'
-      `
-    )
+    } catch (error) {
+      console.error('Erro ao alterar a senha:', error.message);
+      throw new BadRequestException('Erro ao alterar a senha da empresa');
+    }
   }
 }
