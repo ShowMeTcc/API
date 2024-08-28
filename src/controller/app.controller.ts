@@ -11,10 +11,6 @@ export class AppController {
     return "A API ESTÁ NO AR E FUNCIONANDO";
   }
 
-  @Put('show')
-  async buscarShowPertoDeMim(@Body('cep') cep: string): Promise<void> {
-    await this.clienteService.buscarShowPertoDeMim(cep);
-  }
 
   @Post('incluir')
   async incluirCliente(
@@ -55,7 +51,6 @@ export class AppController {
     }
   }
 
-  // Outros métodos seguem a mesma estrutura de correção
 
   @Post('validar')
   async verificarLogin(@Body('email') email: string, @Body('senha') senha: string): Promise<any> {
@@ -71,6 +66,16 @@ export class AppController {
   {
     try {
       return await this.clienteService.buscarShowsDoCliente(email);
+    } catch (error) {
+      throw new BadRequestException('Erro ao encontrar shows cliente');
+    }
+  }
+
+  @Get('buscar')
+  async todosOsCliente() : Promise<any>
+  {
+    try {
+      return await this.clienteService.visualizarTodos();
     } catch (error) {
       throw new BadRequestException('Erro ao encontrar shows cliente');
     }
