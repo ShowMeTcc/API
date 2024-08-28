@@ -76,14 +76,20 @@ export class EmpresaController {
   }
 
   @Get('buscarShows')
-  async buscarShows(
-    @Body('email') email: string
-  ): Promise<any> {
+  async buscarShows(@Body('email') email: string): Promise<any> {
     try {
       return await this.empresaService.buscarShows(email);
     } catch (error) {
       console.error('Erro ao buscar shows:', error.message);
       throw new BadRequestException('Erro ao buscar shows');
     }
+  }
+
+
+
+  @Get('buscar')
+  async buscarEmpresas(): Promise<any>
+  {
+    return await this.empresaService.todasAsEmpresas();
   }
 }

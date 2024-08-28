@@ -79,13 +79,13 @@ export class EmpresaService {
       `
     )
   }
+
   async buscarShows(email: string) {
     try {
       const result = await this.connection.query(
-        `
-        exec showme.buscarShowsPorEmpresa '${email}'
-      `
-      )
+        `EXEC showme.buscarShowsPorEmpresa '${email}'`,
+        [email]
+      );
       return result;
     } catch (error) {
       console.error('Erro ao buscar shows:', error.message);
@@ -93,5 +93,13 @@ export class EmpresaService {
     }
   }
 
+
+  async todasAsEmpresas() {
+    return await this.connection.query(
+      `
+        select * from showme.Empresa
+      `
+    )
+  }
 
 }
