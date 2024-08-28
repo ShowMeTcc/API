@@ -1,4 +1,4 @@
-import { Controller, Post, Body, Delete, Put, Get, BadRequestException, NotFoundException } from '@nestjs/common';
+import { Controller, Post, Body, Delete, Put, Get, BadRequestException, NotFoundException, Query } from '@nestjs/common';
 import { Cliente } from 'src/entity/cliente.entity';
 import { ClienteService } from 'src/service/cliente.services';
 
@@ -65,4 +65,16 @@ export class AppController {
       throw new BadRequestException('Erro ao validar cliente');
     }
   }
+
+  @Get('shows')
+  async buscarShowsDoCliente(@Query ('email') email:string) : Promise<any>
+  {
+    try {
+      return await this.clienteService.buscarShowsDoCliente(email);
+    } catch (error) {
+      throw new BadRequestException('Erro ao encontrar shows cliente');
+    }
+  }
+
+
 }

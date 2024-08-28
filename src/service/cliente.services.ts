@@ -151,4 +151,15 @@ export class ClienteService {
     )
     
   }
+
+
+  async buscarShowsDoCliente (email:string): Promise<any>
+  {
+    return await this.connection.query(
+      `
+        exec showme.buscarShowsPorCliente '${email}'
+      `
+    )
+  }
+
 }
