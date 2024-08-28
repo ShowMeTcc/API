@@ -1,4 +1,4 @@
-import { Controller, Post, Put, Delete, Body, BadRequestException, Get } from '@nestjs/common';
+import { Controller, Post, Put, Delete, Body, BadRequestException, Get, Query } from '@nestjs/common';
 import { get } from 'http';
 import { EmpresaService } from 'src/service/empresa.service';
 import { QueryFailedError } from 'typeorm';
@@ -76,7 +76,7 @@ export class EmpresaController {
   }
 
   @Get('buscarShows')
-  async buscarShows(@Body('email') email: string): Promise<any> {
+  async buscarShows(@Query('email') email: string): Promise<any> {
     try {
       return await this.empresaService.buscarShows(email);
     } catch (error) {

@@ -83,7 +83,9 @@ export class EmpresaService {
   async buscarShows(email: string) {
     try {
       const result = await this.connection.query(
-        `EXEC showme.buscarShowsPorEmpresa '${email}'`,
+        `
+        EXEC showme.buscarShowsPorEmpresa '${email}'
+      `,
         [email]
       );
       return result;
@@ -92,7 +94,6 @@ export class EmpresaService {
       throw new BadRequestException('Erro ao buscar shows');
     }
   }
-
 
   async todasAsEmpresas() {
     return await this.connection.query(
