@@ -27,10 +27,11 @@ export class EmpresaController {
   @Post('ingresso')
   async criarIngresso(
     @Body('email') email: string,
-    @Body('idShow') idShow: number
+    @Body('idShow') idShow: number,
+    @Body ('qtdIngresso') qtd:number,
   ): Promise<any> {
     try {
-      const ingresso = await this.empresaService.criarIngresso(email, idShow);
+      const ingresso = await this.empresaService.criarIngresso(email, idShow,qtd);
       return ingresso;
     } catch (error) {
       console.error('Erro ao criar ingresso:', error.message);

@@ -26,13 +26,14 @@ export class EmpresaService {
     }
   }
 
-  async criarIngresso(email: string, idShow: number): Promise<any> {
+  async criarIngresso(email: string, idShow: number, qtdIngresso:Number): Promise<any> {
     try {
+      console.log(email,idShow,qtdIngresso)
       const result = await this.connection.query(
+
         `
-          EXEC showme.criarIngresso '${email}','${idShow}'
-        `,
-        [email, idShow]
+          EXEC showme.criarIngresso ${idShow}, '${email}', ${qtdIngresso}
+        `
       );
       return result;
     } catch (error) {
