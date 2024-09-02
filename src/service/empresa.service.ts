@@ -123,7 +123,20 @@ export class EmpresaService {
     }
   }
 
-
+  async criarShow(idArtista:number,nome:string,localCep:string,dataShow:string,foto:string)
+  {
+    try {
+      const result = await this.connection.query(
+        `
+            çasdhjfvpj
+        `,
+      );
+      return result;
+    } catch (error) {
+      console.error('Erro ao buscar shows:', error.message);
+      throw new BadRequestException('Erro ao buscar shows');
+    }
+  } 
 
 
   async infoDosShows(idShow:number)
@@ -139,6 +152,6 @@ export class EmpresaService {
       throw new Error('Show inexistente ou inválido');
     }
     else
-    return queryResult
+    return queryResult[0]
   }
 }

@@ -24,6 +24,38 @@ export class EmpresaController {
     }
   }
 
+  @Post('show')
+  async criarShow(
+    @Body('idArtista') idArtista: number,
+    @Body('nome') nome: string,
+    @Body ('localCep') localCep:string,
+    @Body ('dataShow') dataShow:string,
+    @Body ('foto') foto:string,
+  ): Promise<any> {
+    try {
+      const show = await this.empresaService.criarShow(idArtista,nome,localCep,dataShow,foto);
+      return show;
+    } catch (error) {
+      console.error('Erro ao criar show:', error.message);
+      throw new BadRequestException('Erro ao criar show');
+    }
+  }
+
+/*
+
+  create table showme.Show(
+    id int PRIMARY key IDENTITY,
+    idArtista int not null,
+    nome varchar(50) not null,
+    localCep char(9) not null,
+    dataShow date,
+    foto varchar(max) not null,  
+    FOREIGN KEY (idArtista) REFERENCES showme.Artista(id)
+)
+
+*/
+
+
   @Post('ingresso')
   async criarIngresso(
     @Body('email') email: string,
