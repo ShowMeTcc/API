@@ -82,4 +82,15 @@ export class AppController {
   }
 
 
+  @Get ('infoCliente')
+  async informarcaoCLiente (@Query ('email') email:string) : Promise<any>
+  {
+    try {
+      return await this.clienteService.informacaoCliente(email);
+    } catch (error) {
+      throw new BadRequestException('Erro ao encontrar shows cliente');
+    }
+  }
+
+
 }

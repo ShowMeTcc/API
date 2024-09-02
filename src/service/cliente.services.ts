@@ -153,6 +153,18 @@ export class ClienteService {
   }
 
 
+  async informacaoCliente (email:string): Promise<any>
+  {
+    return await this.connection.query(
+      `
+      OPEN SYMMETRIC KEY MinhaChave
+      DECRYPTION BY CERTIFICATE certificadoDeCriptografia
+      SELECT c.nome + ' ' + c.sobrenome AS 'nome', CONVERT(varchar, DECRYPTBYKEY(c.cpf)) AS 'cpf', c.email AS 'email',
+      c.dataNascimento AS 'dataNascimento' FROM showme.Cliente AS c WHERE c.email = '${email}'
+      `,
+    )
+  }
+
   async buscarShowsDoCliente (email:string): Promise<any>
   {
     return await this.connection.query(
