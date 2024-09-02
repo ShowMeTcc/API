@@ -1,10 +1,15 @@
-import { Controller, Post, Body, Delete, Put, Get, BadRequestException, NotFoundException, Query } from '@nestjs/common';
+import { Controller, Post, Body, Delete, Put, Get, BadRequestException, NotFoundException, Query, HttpStatus, Res, UseInterceptors, UploadedFile } from '@nestjs/common';
 import { Cliente } from 'src/entity/cliente.entity';
 import { ClienteService } from 'src/service/cliente.services';
+import { ImageService } from 'src/service/img.service';
+import { Response } from 'express';
+import { FileInterceptor } from '@nestjs/platform-express';
+
+
 
 @Controller('clientes')
 export class AppController {
-  constructor(private readonly clienteService: ClienteService) {}
+  constructor(private readonly clienteService: ClienteService,private readonly imageService: ImageService) {}
 
   @Get('oi')
   async oi(): Promise<string> {
@@ -91,6 +96,32 @@ export class AppController {
       throw new BadRequestException('Erro ao encontrar shows cliente');
     }
   }
+  @Post('converter')
+  async convertBase64ToImage(@Body('base64') base64String: string, @Body('format') format: 'png' | 'jpeg', @Res() res: Response) {
+    try {
+      const imageBuffer = await this.imageService.base64ToImage(base64String, format);
+      res.setHeader('Content-Type', `image/${format}`);
+      res.send(imageBuffer);
+    } catch (error) {
+      res.status(HttpStatus.INTERNAL_SERVER_ERROR).json({ message: 'Error processing image' });
+    }
+  }
 
+
+
+  @Post('toBase64')
+  @UseInterceptors(FileInterceptor('file'))
+  async uploadImage(@UploadedFile() file: Express.Multer.File, @Res() res: Response) {
+    try {
+      if (!file) {
+        return res.status(HttpStatus.BAD_REQUEST).json({ message: 'No file uploaded' });
+      }
+
+      const base64String = await this.imageService.imageBufferToBase64(file.buffer);
+      res.json({ base64: base64String });
+    } catch (error) {
+      res.status(HttpStatus.INTERNAL_SERVER_ERROR).json({ message: 'Error processing image' });
+    }
+  }
 
 }

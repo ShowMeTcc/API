@@ -12,7 +12,6 @@ import {PassportModule} from '@nestjs/passport';
 import { Empresa } from 'src/entity/empresa.entity';
 import { EmpresaController } from 'src/controller/empresa.controller';
 import { EmpresaService } from 'src/service/empresa.service';
-import { ImageController } from 'src/controller/img.controller';
 import { ImageService } from 'src/service/img.service';
 
 
@@ -41,7 +40,7 @@ import { ImageService } from 'src/service/img.service';
       signOptions: { expiresIn: 'id' },
     })],
   
-  controllers: [AppController, ShowController,EmpresaController,ImageController],
+  controllers: [AppController, ShowController,EmpresaController],
   providers: [ClienteService, AppService,ShowService,EmpresaService,ImageService],
 })
 export class AppModule {}

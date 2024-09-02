@@ -1,11 +1,15 @@
-import { Controller, Post, Put, Delete, Body, BadRequestException, Get, Query } from '@nestjs/common';
+import { Controller, Post, Put, Delete, Body, BadRequestException, Get, Query, HttpStatus, Res, UseInterceptors, UploadedFile } from '@nestjs/common';
 import { EmpresaService } from 'src/service/empresa.service';
+import { ImageService } from 'src/service/img.service';
+import { Response } from 'express';
+import { FileInterceptor } from '@nestjs/platform-express';
+
 
 
 
 @Controller('empresa')
 export class EmpresaController {
-  constructor(private readonly empresaService: EmpresaService) {}
+  constructor(private readonly empresaService: EmpresaService, private readonly imageService: ImageService) {}
 
   @Post('incluir')
   async incluirEmpresa(
@@ -40,20 +44,6 @@ export class EmpresaController {
       throw new BadRequestException('Erro ao criar show');
     }
   }
-
-/*
-
-  create table showme.Show(
-    id int PRIMARY key IDENTITY,
-    idArtista int not null,
-    nome varchar(50) not null,
-    localCep char(9) not null,
-    dataShow date,
-    foto varchar(max) not null,  
-    FOREIGN KEY (idArtista) REFERENCES showme.Artista(id)
-)
-
-*/
 
 
   @Post('ingresso')
@@ -139,6 +129,32 @@ export class EmpresaController {
     {
       return await this.empresaService.infoDosShows(idShow);
     }
+    
+  @Post('converter')
+  async convertBase64ToImage(@Body('base64') base64String: string, @Body('format') format: 'png' | 'jpeg', @Res() res: Response) {
+    try {
+      const imageBuffer = await this.imageService.base64ToImage(base64String, format);
+      res.setHeader('Content-Type', `image/${format}`);
+      res.send(imageBuffer);
+    } catch (error) {
+      res.status(HttpStatus.INTERNAL_SERVER_ERROR).json({ message: 'Error processing image' });
+    }
+  }
 
 
+
+  @Post('toBase64')
+  @UseInterceptors(FileInterceptor('file'))
+  async uploadImage(@UploadedFile() file: Express.Multer.File, @Res() res: Response) {
+    try {
+      if (!file) {
+        return res.status(HttpStatus.BAD_REQUEST).json({ message: 'No file uploaded' });
+      }
+
+      const base64String = await this.imageService.imageBufferToBase64(file.buffer);
+      res.json({ base64: base64String });
+    } catch (error) {
+      res.status(HttpStatus.INTERNAL_SERVER_ERROR).json({ message: 'Error processing image' });
+    }
+  }
 }

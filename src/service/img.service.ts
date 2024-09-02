@@ -22,22 +22,17 @@ export class ImageService {
 
 
 
-  async imageToBase64(imagePath: string): Promise<string> {
-    // Resolve o caminho absoluto da imagem
-    const absolutePath = resolve(imagePath);
-
-    // Leia a imagem do arquivo
-    const imageBuffer = await readFile(absolutePath);
-
+   async imageBufferToBase64(imageBuffer: Buffer): Promise<any> {
     // Converta a imagem para Base64
     const base64Data = await sharp(imageBuffer).toBuffer();
-    const base64String = `data:image/${this.getImageFormat(absolutePath)};base64,${base64Data.toString('base64')}`;
+    const base64String = `data:image/${this.getImageFormat(imageBuffer)};base64,${base64Data.toString('base64')}`;
 
     return base64String;
   }
 
-  private getImageFormat(path: string): string {
-    const ext = path.split('.').pop();
-    return ext === 'jpg' ? 'jpeg' : ext;
+  private getImageFormat(buffer: Buffer): Promise<any> {
+    // Usando sharp para obter o formato da imagem
+    return sharp(buffer).metadata().then(metadata => metadata.format === 'jpeg' ? 'jpeg' : metadata.format);
   }
+
 }
