@@ -101,4 +101,12 @@ export class EmpresaController {
     return await this.empresaService.informacaoEmpresa(email);
   }
 
+
+    @Get('infoShow')
+    async infoShow(@Query ('idShow') idShow:number): Promise<any>
+    {
+      return await this.empresaService.infoDosShows(idShow);
+    }
+
+
 }
