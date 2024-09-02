@@ -8,7 +8,7 @@ import { readFile } from 'fs/promises';
 export class ImageService {
 
   async base64ToImage(base64String: string, format: 'png' | 'jpeg' = 'png'): Promise<Buffer> {
-    // Remove o prefixo data:image/png;base64, se estiver presente
+    // Remove o prefixo data:image/png;base64, ou data:image/jpeg;base64, se estiver presente
     const base64Data = base64String.replace(/^data:image\/\w+;base64,/, '');
 
     // Decodifica a string Base64 para um Buffer

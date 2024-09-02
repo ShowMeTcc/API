@@ -130,16 +130,24 @@ export class EmpresaController {
       return await this.empresaService.infoDosShows(idShow);
     }
     
-  @Post('converter')
-  async convertBase64ToImage(@Body('base64') base64String: string, @Body('format') format: 'png' | 'jpeg', @Res() res: Response) {
-    try {
-      const imageBuffer = await this.imageService.base64ToImage(base64String, format);
-      res.setHeader('Content-Type', `image/${format}`);
-      res.send(imageBuffer);
-    } catch (error) {
-      res.status(HttpStatus.INTERNAL_SERVER_ERROR).json({ message: 'Error processing image' });
+    @Post('converter')
+    async convertBase64ToImage(
+      @Body() body: { base64: string; format: 'png' | 'jpeg' },
+      @Res() res: Response
+    ) {
+      try {
+        const { base64, format } = body;
+        if (!base64 || !format) {
+          return res.status(HttpStatus.BAD_REQUEST).json({ message: 'Base64 string and format are required' });
+        }
+  
+        const imageBuffer = await this.imageService.base64ToImage(base64, format);
+        res.setHeader('Content-Type', `image/${format}`);
+        res.send(imageBuffer);
+      } catch (error) {
+        res.status(HttpStatus.INTERNAL_SERVER_ERROR).json({ message: 'Error processing image' });
+      }
     }
-  }
 
 
 
