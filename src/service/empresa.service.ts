@@ -104,4 +104,23 @@ export class EmpresaService {
     )
   }
 
+  async informacaoEmpresa(email:string)
+  {
+    try {
+      const result = await this.connection.query(
+        `
+        OPEN SYMMETRIC KEY MinhaChave
+        DECRYPTION BY CERTIFICATE certificadoDeCriptografia
+        SELECT e.nome as 'nome', e.email as 'email', CONVERT(varchar, DECRYPTBYKEY(e.cnpj)) AS 'cnpj', e.telefone as 'telefone' FROM showme.Empresa as e 
+        WHERE email = '${email}'
+      `,
+        [email]
+      );
+      return result;
+    } catch (error) {
+      console.error('Erro ao buscar shows:', error.message);
+      throw new BadRequestException('Erro ao buscar shows');
+    }
+  }
+
 }

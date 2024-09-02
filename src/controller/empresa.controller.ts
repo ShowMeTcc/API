@@ -93,4 +93,12 @@ export class EmpresaController {
   {
     return await this.empresaService.todasAsEmpresas();
   }
+
+  @Get('infoEmpresa')
+
+  async informacaoEmpresa(@Query('email') email: string): Promise<any>
+  {
+    return await this.empresaService.informacaoEmpresa(email);
+  }
+
 }
