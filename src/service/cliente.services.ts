@@ -40,18 +40,12 @@ export class ClienteService {
     }
   }
 
-  async deletarCliente(cpf: string, email: string): Promise<void> {
-    try {
-      const queryResult = await this.connection.query(
-        `EXEC showme.deletarCliente '${cpf}', '${email}'`,
-        [cpf, email]
-      );
-      if (queryResult.rowsAffected[0] === 0) {
-        throw new NotFoundException('Cliente inexistente ou inválido');
-      }
-    } catch (error) {
-      throw new BadRequestException('Erro ao deletar cliente');
-    }
+  async deletarCliente(senha: string, email: string): Promise<void> {
+
+    return await this.connection.query(
+      `EXEC showme.deletarCliente '${senha}', '${email}'`
+    )
+    
   }
 
   async atualizarNomeCliente(nome: string, cpf: string, email: string): Promise<void> {

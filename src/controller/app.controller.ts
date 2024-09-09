@@ -39,9 +39,10 @@ export class AppController {
   }
 
   @Delete('deletar')
-  async deletarCliente(@Body('cpf') cpf: string, @Body('email') email: string): Promise<void> {
+  async deletarCliente(@Body('senha') senha: string, @Body('email') email: string): Promise<void> {
     try {
-      await this.clienteService.deletarCliente(cpf, email);
+      console.log("Entrou no try")
+      await this.clienteService.deletarCliente(senha, email);
     } catch (error) {
       throw new BadRequestException('Erro ao deletar cliente');
     }
