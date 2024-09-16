@@ -35,9 +35,10 @@ export class EmpresaController {
     @Body ('localCep') localCep:string,
     @Body ('dataShow') dataShow:string,
     @Body ('foto') foto:string,
+    @Body ('hora') hora:string
   ): Promise<any> {
     try {
-      const show = await this.empresaService.criarShow(idArtista,nome,localCep,dataShow,foto);
+      const show = await this.empresaService.criarShow(idArtista,nome,localCep,dataShow,foto,hora);
       return show;
     } catch (error) {
       console.error('Erro ao criar show:', error.message);
