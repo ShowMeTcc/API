@@ -64,10 +64,10 @@ export class EmpresaController {
   @Delete()
   async deletarEmpresa(
     @Body('email') email: string,
-    @Body('cnpj') cnpj: string
+    @Body('senha') senha: string
   ): Promise<any> {
     try {
-      await this.empresaService.excluirEmpresa(email, cnpj);
+      await this.empresaService.excluirEmpresa(email, senha);
       return { message: 'Empresa excluída com sucesso' };
     } catch (error) {
       console.error('Erro ao excluir a empresa:', error.message);

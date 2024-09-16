@@ -3,7 +3,7 @@ import { Cliente } from 'src/entity/cliente.entity';
 import { ClienteService } from 'src/service/cliente.services';
 import { ImageService } from 'src/service/img.service';
 import { Response } from 'express';
-import { FileInterceptor } from '@nestjs/platform-express';
+import { FileInterceptor, FilesInterceptor } from '@nestjs/platform-express';
 
 
 
@@ -125,4 +125,31 @@ export class AppController {
     }
   }
 
+//Email ; CPF --> Transformar isso no Id do cliente ; idDoShow --> Transformar também no id do Ingresso na tabela do BD
+  @Post ('comprar')
+  @UseInterceptors(FilesInterceptor('file'))
+  async comprarIngresso(
+    @UploadedFile() foto: Express.Multer.File,
+    @Res() res: Response,
+    @Body('email') email:string,
+    @Body('cpf') cpf:string,
+    @Body('idDoShow') idShow:number
+    ): Promise<any>{
+    try {
+      if (!foto || email == null || cpf == null || idShow == null) {
+        return res.status(HttpStatus.BAD_REQUEST).json({ message: 'Dados não enviados' });
+      }
+
+      await this.clienteService.cadastrarCompra(foto,email,cpf,idShow);
+      res.json({ mensagem: "Compra efetuada" });
+    } catch (error) {
+      res.status(HttpStatus.INTERNAL_SERVER_ERROR).json({ message: 'Erro de sistema:'+error.message });
+    }
+  
+  }
+
 }
+
+
+
+

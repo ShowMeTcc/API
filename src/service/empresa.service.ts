@@ -42,13 +42,13 @@ export class EmpresaService {
     }
   }
 
-  async excluirEmpresa(email: string, cnpj: string): Promise<void> {
+  async excluirEmpresa(email: string, senha: string): Promise<void> {
     try {
       await this.connection.query(
         `
-          EXEC showme.excluirEmpresa '${cnpj}', '${email}'
+          EXEC showme.excluirEmpresa '${senha}', '${email}'
         `,
-        [cnpj, email]
+        [senha, email]
       );
     } catch (error) {
       console.error('Erro ao excluir a empresa:', error.message);
