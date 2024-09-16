@@ -169,6 +169,8 @@ export class ClienteService {
   }
 
 
-  async
+  async cadastrarCompra(foto,email,cpf,idShow){
+    console.log("oi");
+  }
 
 }
