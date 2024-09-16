@@ -51,7 +51,7 @@ export class ShowService {
   async listarShows(): Promise<Show[]> {
     return await this.connection.query(
       `
-      select * from showme.Show
+      exec showme.pegarTodosOsShows
       `,
     );
   }
