@@ -170,7 +170,11 @@ export class ClienteService {
 
 
   async cadastrarCompra(foto,email,cpf,idShow){
-    console.log("oi");
+    return await this.connection.query(
+      `
+        exec showme.efetuarCompra '${foto}','${email}','${cpf}', ${idShow}
+      `,
+    )
   }
 
 }

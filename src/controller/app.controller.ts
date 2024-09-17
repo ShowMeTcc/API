@@ -129,18 +129,18 @@ export class AppController {
   @Post ('comprar')
   @UseInterceptors(FilesInterceptor('file'))
   async comprarIngresso(
-    @UploadedFile() foto: Express.Multer.File,
+    @UploadedFile() file: Express.Multer.File,
     @Res() res: Response,
     @Body('email') email:string,
     @Body('cpf') cpf:string,
     @Body('idDoShow') idShow:number
     ): Promise<any>{
     try {
-      if (!foto || email == null || cpf == null || idShow == null) {
+      if (!file || email == null || cpf == null || idShow == null) {
         return res.status(HttpStatus.BAD_REQUEST).json({ message: 'Dados não enviados' });
       }
-
-      await this.clienteService.cadastrarCompra(foto,email,cpf,idShow);
+      var fotoTransformada = await this.imageService.imageBufferToBase64(file.buffer);
+      await this.clienteService.cadastrarCompra(fotoTransformada,email,cpf,idShow);
       res.json({ mensagem: "Compra efetuada" });
     } catch (error) {
       res.status(HttpStatus.INTERNAL_SERVER_ERROR).json({ message: 'Erro de sistema:'+error.message });
