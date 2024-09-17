@@ -168,4 +168,15 @@ export class EmpresaService {
   }
 
 
+  async cadastrarArtista(nome:string){
+    const queryResult = await this.connection.query(
+      `
+      insert into showme.Artista values ('${nome}')
+      `,
+      
+    );
+    return queryResult
+  }
+
+
 }

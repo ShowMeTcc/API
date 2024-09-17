@@ -182,4 +182,16 @@ export class EmpresaController {
       throw new BadRequestException('Erro ao buscar todos os artistas');
     }
   }
+
+
+  @Post('criarArtista')
+  async criarArtista(@Body('nome')nome: string,res:Response)
+  {
+    if(nome == null) res.status(HttpStatus.BAD_REQUEST).json({ mensagem: 'Nome do artista não fornecido'});
+    try{
+      return await this.empresaService.cadastrarArtista(nome);
+    } catch (error){
+      res.status(HttpStatus.INTERNAL_SERVER_ERROR).json({ message: 'Error interno no processamento' });
+    }
+  }
 }
