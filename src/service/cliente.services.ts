@@ -169,10 +169,10 @@ export class ClienteService {
   }
 
 
-  async cadastrarCompra(foto,email,cpf,idShow){
+  async cadastrarCompra(foto,email,cpf,idShow,idIngresso){
     return await this.connection.query(
       `
-        exec showme.efetuarCompra '${foto}','${email}','${cpf}', ${idShow}
+        exec showme.efetuarCompra '${foto}','${email}','${cpf}', ${idShow}, ${idIngresso}
       `,
     )
   }
