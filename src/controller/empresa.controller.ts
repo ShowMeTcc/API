@@ -168,4 +168,18 @@ export class EmpresaController {
       res.status(HttpStatus.INTERNAL_SERVER_ERROR).json({ message: 'Error processing image' });
     }
   }
+
+
+
+
+  @Get('artistas')
+  async todosArtistas(res:Response)
+  {
+    try {
+      return await this.empresaService.todosArtistas();
+    } catch (error) {
+      console.error('Erro ao buscar todos os artistas:', error.message);
+      throw new BadRequestException('Erro ao buscar todos os artistas');
+    }
+  }
 }

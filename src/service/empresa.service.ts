@@ -154,4 +154,18 @@ export class EmpresaService {
     else
     return queryResult[0]
   }
+
+
+  async todosArtistas()
+  {
+    const queryResult = await this.connection.query(
+      `
+      select * from showme.Artista
+      `,
+      
+    );
+    return queryResult
+  }
+
+
 }
