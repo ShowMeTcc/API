@@ -2,9 +2,11 @@ import { Injectable, NotFoundException, BadRequestException } from '@nestjs/comm
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository, Connection } from 'typeorm';
 import { Cliente } from '../entity/cliente.entity';
+import axios from 'axios';
 
 @Injectable()
 export class ClienteService {
+  httpService: any;
   constructor(
     @InjectRepository(Cliente)
     private readonly clienteRepository: Repository<Cliente>,
@@ -177,4 +179,13 @@ export class ClienteService {
     )
   }
 
+  async getDataFromPythonApi() {
+    try {
+      const response = await axios.get('http://127.0.0.1:8000/api/hello');
+      return response.data;
+    } catch (error) {
+      console.error('Erro ao chamar a API Python:', error);
+      throw new Error('Erro ao chamar a API Python');
+    }
+  }
 }

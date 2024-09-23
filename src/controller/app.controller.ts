@@ -150,6 +150,16 @@ export class AppController {
   
   }
 
+
+  @Get('testeApiByApi')
+  async apiPorApi(@Res() res: Response) {
+    try {
+      return await this.clienteService.getDataFromPythonApi();
+    } catch (error) {
+      res.status(HttpStatus.INTERNAL_SERVER_ERROR).json({ message: 'Error' });
+    }
+  }
+
 }
 
 
