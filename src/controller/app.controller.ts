@@ -134,7 +134,7 @@ export class AppController {
     @Body('email') email:string,
     @Body('cpf') cpf:string,
     @Body('idDoShow') idShow:number,
-    @Body('idIngresso') idIngresso:number
+    @Body('idIngresso') idIngresso:number,
     @Body('qtdComprada') qtdComprada:number
     ): Promise<any>{
     try {
