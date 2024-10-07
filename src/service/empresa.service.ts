@@ -26,13 +26,13 @@ export class EmpresaService {
     }
   }
 
-  async criarIngresso(email: string, idShow: number, qtdIngresso:Number,valor:number,descricao:string): Promise<any> {
+  async criarIngresso(email: string, idShow: number, qtdIngresso:Number,valor:number,descricao:string,estilo:number): Promise<any> {
     try {
       console.log(email,idShow,qtdIngresso,valor,descricao)
       const result = await this.connection.query(
 
         `
-          EXEC showme.criarIngresso ${idShow}, '${email}', ${qtdIngresso},${valor},'${descricao}'
+          EXEC showme.criarIngresso ${idShow}, '${email}', ${qtdIngresso},${valor},'${descricao}', ${estilo}
         `
       );
       return result;
@@ -177,6 +177,22 @@ export class EmpresaService {
     );
     return queryResult
   }
+
+async cadastrarTipoIngresso(estilo:string) {
+  try {
+    const result = await this.connection.query(
+      `  
+        exec showme.CriarTipoIngresso '${estilo}'
+      `,
+    );
+    return result;
+  } catch (error) {
+    console.error('Erro ao buscar shows:', error.message);
+    throw new BadRequestException('Erro ao buscar shows');
+  }
+}
+
+  
 
 
 }

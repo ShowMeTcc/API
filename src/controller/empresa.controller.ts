@@ -53,10 +53,11 @@ export class EmpresaController {
     @Body('idShow') idShow: number,
     @Body ('qtdIngresso') qtdIngresso:number,
     @Body ('valor') valor:number,
-    @Body ('descricao') descricao:string
+    @Body ('descricao') descricao:string,
+    @Body ('estilo') estilo:number
   ): Promise<any> {
     try {
-      const ingresso = await this.empresaService.criarIngresso(email, idShow,qtdIngresso,valor,descricao);
+      const ingresso = await this.empresaService.criarIngresso(email, idShow,qtdIngresso,valor,descricao,estilo);
       return ingresso;
     } catch (error) {
       console.error('Erro ao criar ingresso:', error.message);
@@ -194,4 +195,15 @@ export class EmpresaController {
       res.status(HttpStatus.INTERNAL_SERVER_ERROR).json({ message: 'Error interno no processamento' });
     }
   }
+
+  @Post('criarTipoIngresso')
+  async criarTipoIngresso (@Body ('estilo') estilo:string, res:Response){
+    if(estilo == null) res.status(HttpStatus.BAD_REQUEST).json({ mensagem: 'Estilo do ingresso não foi passado'});
+    try{
+      return await this.empresaService.cadastrarTipoIngresso(estilo);
+    } catch (error){
+      res.status(HttpStatus.INTERNAL_SERVER_ERROR).json({ message: 'Error interno no processamento' });
+    }
+  }
+
 }
