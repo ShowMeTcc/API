@@ -1,5 +1,5 @@
 import { Controller, Post, Body, Delete, Put, Get, BadRequestException, NotFoundException, Query, HttpStatus, Res, UseInterceptors, UploadedFile } from '@nestjs/common';
-import { Cliente } from 'src/entity/cliente.entity';
+import { Cliente } from 'src/models/cliente.entity';
 import { ClienteService } from 'src/service/cliente.services';
 import { ImageService } from 'src/service/img.service';
 import { Response } from 'express';

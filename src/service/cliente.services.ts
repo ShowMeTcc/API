@@ -1,7 +1,7 @@
 import { Injectable, NotFoundException, BadRequestException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository, Connection } from 'typeorm';
-import { Cliente } from '../entity/cliente.entity';
+import { Cliente } from '../models/cliente.entity';
 import axios from 'axios';
 
 @Injectable()

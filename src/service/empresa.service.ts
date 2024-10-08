@@ -1,8 +1,8 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository, Connection } from 'typeorm';
-import { Empresa } from 'src/entity/empresa.entity';
-import { Ingresso } from 'src/entity/ingresso.entity';
+import { Empresa } from 'src/models/empresa.entity';
+import { Ingresso } from 'src/models/ingresso.entity';
 
 @Injectable()
 export class EmpresaService {

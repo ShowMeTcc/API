@@ -1,7 +1,7 @@
 // show.controller.ts
 import { Controller, Get, Post, Put, Delete, Param, Body } from '@nestjs/common';
 import { ShowService } from 'src/service/show.services';
-import { Show } from '../entity/show.entity';
+import { Show } from '../models/show.entity';
 
 @Controller('shows')
 export class ShowController {
