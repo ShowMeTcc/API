@@ -28,7 +28,6 @@ export class EmpresaService {
 
   async criarIngresso(email: string, idShow: number, qtdIngresso:Number,valor:number,descricao:string,estilo:number): Promise<any> {
     try {
-      console.log(email,idShow,qtdIngresso,valor,descricao)
       const result = await this.connection.query(
 
         `
