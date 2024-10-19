@@ -192,4 +192,23 @@ export class ClienteService {
       throw new Error('Erro ao chamar a API Python');
     }
   }
+
+
+  async getInfoCompraPorCliente(email:String): Promise<any> { 
+    try {
+      let ret = await this.connection.query(
+        `
+        exec showme.infosCompraPorCliente '${email}'
+        `,
+        
+      ); 
+      return ret
+    } catch (error) {
+      console.error('Erro ao selecionar os dados da compra do cliente: ' + error);
+      throw new Error('Erro ao selecionar os dados da compra do cliente: '+error);
+    }
+    
+  }
+
+
 }
