@@ -183,9 +183,9 @@ export class ClienteService {
     )
   }
 
-  async getDataFromPythonApi(val1:number,val2:number) {
+  async getDataFromPythonApi(val1:string,val2:string) {
     try {
-      const response = await axios.get(`http://127.0.0.1:8000/reconhecer`, {
+      const response = await axios.get(`http://127.0.0.1:8000/teste`, {
         params: {
           val1: val1,
           val2: val2

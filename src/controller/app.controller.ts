@@ -153,7 +153,12 @@ export class AppController {
 
 
   @Get('reconhecimento')
-  async apiPorApi(@Res() res: Response, @Body('val1')val1:number, @Body ('val2') val2:number) {
+  async apiPorApi(
+    @Res() res: Response,
+    @Body('val1')val1:string,
+    @Body ('val2') val2:string
+    
+    ) {
     try {
       const result = await this.clienteService.getDataFromPythonApi(val1,val2);
       return res.status(HttpStatus.OK).json({ result }); // Envie o resultado como resposta
