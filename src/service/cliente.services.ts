@@ -183,15 +183,23 @@ export class ClienteService {
     )
   }
 
-  async getDataFromPythonApi() {
+  async getDataFromPythonApi(val1:number,val2:number) {
     try {
-      const response = await axios.get('http://127.0.0.1:8000/api/hello');
-      return response.data;
+      const response = await axios.get(`http://127.0.0.1:8000/reconhecer`, {
+        params: {
+          val1: val1,
+          val2: val2
+        }
+      });
+      console.log(response.data);
+      return response.data
+  
     } catch (error) {
       console.error('Erro ao chamar a API Python:', error);
       throw new Error('Erro ao chamar a API Python');
     }
   }
+  
 
 
   async getInfoCompraPorCliente(email:String): Promise<any> { 

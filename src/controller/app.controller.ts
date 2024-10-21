@@ -152,14 +152,17 @@ export class AppController {
   }
 
 
-  @Get('testeApiByApi')
-  async apiPorApi(@Res() res: Response) {
+  @Get('reconhecimento')
+  async apiPorApi(@Res() res: Response, @Body('val1')val1:number, @Body ('val2') val2:number) {
     try {
-      return await this.clienteService.getDataFromPythonApi();
+      const result = await this.clienteService.getDataFromPythonApi(val1,val2);
+      return res.status(HttpStatus.OK).json({ result }); // Envie o resultado como resposta
     } catch (error) {
-      res.status(HttpStatus.INTERNAL_SERVER_ERROR).json({ message: 'Error' });
+      console.error('Erro:', error); // Log para ajudar na depuração
+      return res.status(HttpStatus.INTERNAL_SERVER_ERROR).json({ message: 'Error' });
     }
   }
+  
 
 
 
