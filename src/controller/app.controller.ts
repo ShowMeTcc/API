@@ -152,11 +152,11 @@ export class AppController {
   }
 
 
-  @Get('reconhecimento')
+  @Post('reconhecimento')
   async apiPorApi(
     @Res() res: Response,
-    @Body('val1')val1:string,
-    @Body ('val2') val2:string
+    @Body('conhecido')val1:string,
+    @Body ('desconhecido') val2:string
     
     ) {
     try {
