@@ -206,4 +206,11 @@ export class EmpresaController {
     }
   }
 
+
+
+  @Get('todosIngressos')
+  async todosOsingressos() {
+    return await this.empresaService.todosIngressos();
+  }
+
 }
