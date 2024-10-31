@@ -32,13 +32,13 @@ export class EmpresaController {
   async criarShow(
     @Body('idArtista') idArtista: number,
     @Body('nome') nome: string,
-    @Body ('localCep') localCep:string,
+    @Body ('endereco') local:string,
     @Body ('dataShow') dataShow:string,
     @Body ('foto') foto:string,
     @Body ('hora') hora:string
   ): Promise<any> {
     try {
-      const show = await this.empresaService.criarShow(idArtista,nome,localCep,dataShow,foto,hora);
+      const show = await this.empresaService.criarShow(idArtista,nome,local,dataShow,foto,hora);
       return show;
     } catch (error) {
       console.error('Erro ao criar show:', error.message);

@@ -84,7 +84,7 @@ export class EmpresaService {
     try {
       const result = await this.connection.query(
         `
-        EXEC showme.buscarShowsPorEmpresa '${email}'
+        exec showme.buscarShowsPorEmpresa '${email}'
       `,
         [email]
       );
@@ -122,12 +122,12 @@ export class EmpresaService {
     }
   }
 
-  async criarShow(idArtista:number,nome:string,localCep:string,dataShow:string,foto:string,hora:string)
+  async criarShow(idArtista:number,nome:string,local:string,dataShow:string,foto:string,hora:string)
   {
     try {
       const result = await this.connection.query(
         `  
-          exec showme.incluirShow ${idArtista}, '${nome}' , '${localCep}' , '${dataShow}','${foto}','${hora}'
+          exec showme.incluirShow ${idArtista}, '${nome}' , '${local}' , '${dataShow}','${foto}','${hora}'
         `,
       );
       return result;
