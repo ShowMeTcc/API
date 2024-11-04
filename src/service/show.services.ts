@@ -25,7 +25,7 @@ export class ShowService {
   async deletarShow(id: number): Promise<void> {
     const queryResult = await this.connection.query(
       `
-     delete from showme.Show where id = ${id}
+      delete from showme.Show where id = ${id}
       `,
       [id],
     );

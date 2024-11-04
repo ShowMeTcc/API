@@ -29,8 +29,8 @@ export class ShowController {
     await this.showService.atualizarShow(Number(id), nome, localCep, dataShow, idArtista);
   }
 
-  @Delete(':id')
-  async deletarShow(@Param('id') id: string): Promise<void> {
+  @Delete('/')
+  async deletarShow(@Body('id') id: string): Promise<void> {
     await this.showService.deletarShow(Number(id));
   }
 }
