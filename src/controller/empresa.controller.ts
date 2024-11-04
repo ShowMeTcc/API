@@ -213,4 +213,6 @@ export class EmpresaController {
     return await this.empresaService.todosIngressos();
   }
 
+  @Post('deletarShow')
+
 }

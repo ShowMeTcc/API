@@ -161,10 +161,16 @@ export class AppController {
     ) {
     try {
       const result = await this.clienteService.getDataFromPythonApi(val1,val2);
-      return res.status(HttpStatus.OK).json({ result }); // Envie o resultado como resposta
+      if (result.iguais == true){
+        console.log("É IGUAL")
+        return res.status(HttpStatus.OK).json({ result });
+      }
+      if(result.iguais == false){
+        return res.status(HttpStatus.OK).json({ result });
+      }
     } catch (error) {
       console.error('Erro:', error); // Log para ajudar na depuração
-      return res.status(HttpStatus.INTERNAL_SERVER_ERROR).json({ message: 'Error' });
+      return res.status(HttpStatus.INTERNAL_SERVER_ERROR).json({ message: ''+error.message });
     }
   }
   
