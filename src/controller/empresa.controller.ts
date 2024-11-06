@@ -39,7 +39,7 @@ export class EmpresaController {
   ): Promise<any> {
     try {
       const show = await this.empresaService.criarShow(idArtista,nome,local,dataShow,foto,hora);
-      return show;
+      return {"show":show};
     } catch (error) {
       console.error('Erro ao criar show:', error.message);
       throw new BadRequestException('Erro ao criar show');
@@ -54,7 +54,7 @@ export class EmpresaController {
     @Body ('qtdIngresso') qtdIngresso:number,
     @Body ('valor') valor:number,
     @Body ('descricao') descricao:string,
-    @Body ('estilo') estilo:number
+    @Body ('estilo') estilo:string
   ): Promise<any> {
     try {
       const ingresso = await this.empresaService.criarIngresso(email, idShow,qtdIngresso,valor,descricao,estilo);
