@@ -122,12 +122,12 @@ export class EmpresaService {
     }
   }
 
-  async criarShow(idArtista:number,nome:string,local:string,dataShow:string,foto:string,hora:string)
+  async criarShow(idArtista:number,nome:string,local:string,dataShow:string,foto:string,hora:string,emailEmpresa:string)
   {
     try {
       const result = await this.connection.query(
         `  
-          exec showme.incluirShow ${idArtista}, '${nome}' , '${local}' , '${dataShow}','${foto}','${hora}'
+          exec showme.incluirShow ${idArtista}, '${nome}' , '${local}' , '${dataShow}','${foto}','${hora}','${emailEmpresa}'
         `,
       );
       return result;
