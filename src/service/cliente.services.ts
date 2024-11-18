@@ -197,7 +197,20 @@ export class ClienteService {
     }
   }
   
-
+  async getImgFromBd (email:String){
+    let ret = await this.connection.query(
+      `select foto from showme.Cliente where email = '${email}'`
+    );
+    
+    // Verifique se o resultado contém pelo menos uma linha
+    if (ret.length > 0) {
+      // Acessa o valor da foto da primeira linha do resultado
+      const foto = ret[0].foto;
+      return foto;  // Retorna somente o valor da foto (pode ser Buffer ou string, dependendo de como a foto foi armazenada)
+    } else {
+      return null; // Caso não haja resultado
+    }
+  }
 
   async getInfoCompraPorCliente(email:String): Promise<any> { 
     try {

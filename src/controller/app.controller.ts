@@ -4,7 +4,7 @@ import { ClienteService } from 'src/service/cliente.services';
 import { ImageService } from 'src/service/img.service';
 import { Response } from 'express';
 import { FileInterceptor, FilesInterceptor } from '@nestjs/platform-express';
-
+import * as multer from 'multer';
 
 
 @Controller('clientes')
@@ -149,6 +149,36 @@ export class AppController {
       res.status(HttpStatus.INTERNAL_SERVER_ERROR).json({ message: 'Erro de sistema:'+error.message });
     }
   
+  }
+
+  @Post('validacaoRostos')
+  @UseInterceptors(FileInterceptor('foto')) // 'foto' é o nome do campo no formulário
+  async validacaoDeRostos(
+    @Res() res: Response,
+    @Body('email') email: string,
+    @UploadedFile() foto: Express.Multer.File // Foto será o arquivo enviado
+  ) {
+    try {
+      // Aqui você pode acessar o arquivo da foto, por exemplo:
+      const desconhecido = await this.imageService.imageBufferToBase64(foto.buffer)
+      
+      const conhecido = await this.clienteService.getImgFromBd(email)
+      console.log("conhecido:  "+conhecido)
+      console.log("desconhecido:  "+desconhecido)
+      
+      const result = await this.clienteService.getDataFromPythonApi(conhecido,desconhecido);
+      if (result.iguais == true){
+        console.log("É IGUAL")
+        return res.status(HttpStatus.OK).json({ result });
+      }
+      if(result.iguais == false){
+        return res.status(HttpStatus.OK).json({ result });
+      }
+      return res.status(HttpStatus.OK).json({ message: 'Foto recebida com sucesso' });
+    } catch (error) {
+      console.error('Erro:', error);
+      return res.status(HttpStatus.INTERNAL_SERVER_ERROR).json({ message: error.message });
+    }
   }
 
 
