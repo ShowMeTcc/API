@@ -213,5 +213,14 @@ export class EmpresaController {
     return await this.empresaService.todosIngressos();
   }
 
+  @Get('ingressosById')
+  async ingressosByid(@Body ('idShow')idShow:number, res:Response){
+    if(idShow == null) res.status(HttpStatus.BAD_REQUEST).json({ mensagem: 'idShow não fornecido'});
+    try{
+      return await this.empresaService.ingressosDoShow(idShow);
+    } catch (error){
+      res.status(HttpStatus.INTERNAL_SERVER_ERROR).json({ message: 'Error interno no processamento:'+error.mensage });
+    }
+  }
 
 }

@@ -201,5 +201,15 @@ async todosIngressos(){
   return queryResult
 }
 
+async ingressosDoShow(idShow:number){
+  const queryResult = await this.connection.query(
+    `
+    select * from showme.Ingresso where idShow = ${idShow}
+    `,
+    
+  );
+  return queryResult
+}
+
 
 }
