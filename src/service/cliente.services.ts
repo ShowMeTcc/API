@@ -1,8 +1,9 @@
-import { Injectable, NotFoundException, BadRequestException } from '@nestjs/common';
+import { Injectable, NotFoundException, BadRequestException, Inject } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository, Connection } from 'typeorm';
 import { Cliente } from '../models/cliente.entity';
 import axios from 'axios';
+import { ConnectionPool } from 'mssql';
 
 @Injectable()
 export class ClienteService {
@@ -212,21 +213,11 @@ export class ClienteService {
     }
   }
 
-  async getInfoCompraPorCliente(email:String): Promise<any> { 
-    try {
-      let ret = await this.connection.query(
-        `
-        exec showme.infosCompraPorCliente '${email}'
-        `,
-        
-      ); 
-      return ret
-    } catch (error) {
-      console.error('Erro ao selecionar os dados da compra do cliente: ' + error);
-      throw new Error('Erro ao selecionar os dados da compra do cliente: '+error);
-    }
-    
+  async getInfoCompraPorCliente(email: string): Promise<any> {
+    return await this.connection.query(
+      `
+      exec showme.infosCompraPorCliente '${email}'
+      `,
+    )
   }
-
-
 }

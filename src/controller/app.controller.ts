@@ -210,12 +210,11 @@ export class AppController {
   @Get('infoCompra')
   async getInfoCompraCliente(@Res() res:Response, @Body('email') email:string){
     try {
-      return await this.clienteService.getInfoCompraPorCliente(email);
+      res.send( await this.clienteService.getInfoCompraPorCliente(email));
     } catch (error) {
       res.status(HttpStatus.INTERNAL_SERVER_ERROR).json({ message: ''+error });
     }
   }
-
 }
 
 
