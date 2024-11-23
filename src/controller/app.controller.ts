@@ -133,7 +133,7 @@ export class AppController {
     @Res() res: Response,
     @Body('email') email:string,
     @Body('cpf') cpf:string,
-    @Body('idDoShow') idShow:number,
+    @Body('idDoShow') idShow:string,
     @Body('idIngresso') idIngresso:number,
     @Body('qtdComprada') qtdComprada:number,
     @Body('compraMultipla') compraMultipla:boolean
@@ -142,8 +142,9 @@ export class AppController {
       if (!file || email == null || cpf == null || idShow == null) {
         return res.status(HttpStatus.BAD_REQUEST).json({ message: 'Dados não enviados' });
       }
+      var idShowNovo = parseInt(idShow)
       var fotoTransformada = await this.imageService.imageBufferToBase64(file.buffer);
-      await this.clienteService.cadastrarCompra(fotoTransformada,email,cpf,idShow,idIngresso,qtdComprada,compraMultipla);
+      await this.clienteService.cadastrarCompra(fotoTransformada,email,cpf,idShowNovo,idIngresso,qtdComprada,compraMultipla);
       res.json({ mensagem: "Compra efetuada" });
     } catch (error) {
       res.status(HttpStatus.INTERNAL_SERVER_ERROR).json({ message: 'Erro de sistema:'+error.message });
