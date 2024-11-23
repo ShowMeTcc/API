@@ -228,13 +228,14 @@ export class EmpresaController {
   async validacaoDeRostos(
     @Res() res: Response,
     @Body('email') email: string,
+    @Body('idShow') idShow:number,
     @UploadedFile() foto: Express.Multer.File // Foto será o arquivo enviado
   ) {
     try {
       // Aqui você pode acessar o arquivo da foto, por exemplo:
       const desconhecido = await this.imageService.imageBufferToBase64(foto.buffer)
       
-      const conhecido = await this.empresaService.getImgFromBd(email)
+      const conhecido = await this.empresaService.getImgFromBd(email,idShow)
       console.log("conhecido:  "+conhecido)
       console.log("desconhecido:  "+desconhecido)
       

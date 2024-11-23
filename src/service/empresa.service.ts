@@ -3,6 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository, Connection } from 'typeorm';
 import { Empresa } from 'src/models/empresa.entity';
 import { Ingresso } from 'src/models/ingresso.entity';
+import axios from 'axios';
 
 @Injectable()
 export class EmpresaService {
@@ -211,17 +212,7 @@ async ingressosDoShow(idShow:number){
   return queryResult
 }
 
-async cadastrarCompra(foto,email,cpf,idShow,idIngresso,qtdComprada,compraMultipla){
-  var novaCompra:number = 1
-  if(compraMultipla == false){
-    novaCompra = 0
-  }
-  return await this.connection.query(
-    `
-      exec showme.efetuarCompra '${foto}','${email}','${cpf}', ${idShow}, ${idIngresso},${qtdComprada},${novaCompra}
-    `,
-  )
-}
+
 
 async getDataFromPythonApi(conhecido: string, desconhecido: string) {
   try {
@@ -237,9 +228,9 @@ async getDataFromPythonApi(conhecido: string, desconhecido: string) {
   }
 }
 
-async getImgFromBd (email:String){
+async getImgFromBd (email:String,idShow:number){
   let ret = await this.connection.query(
-    `select foto from showme.Cliente where email = '${email}'`
+    `exec showme.getFotoByEmail '${email}', ${idShow}`
   );
   
   // Verifique se o resultado contém pelo menos uma linha

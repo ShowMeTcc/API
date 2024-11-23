@@ -2,7 +2,7 @@ import { Injectable, NotFoundException, BadRequestException, Inject } from '@nes
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository, Connection } from 'typeorm';
 import { Cliente } from '../models/cliente.entity';
-import axios from 'axios';
+
 import { ConnectionPool } from 'mssql';
 
 @Injectable()
@@ -172,7 +172,17 @@ export class ClienteService {
   }
 
 
-  
+  async cadastrarCompra(foto,email,cpf,idShow,idIngresso,qtdComprada,compraMultipla){
+    var novaCompra:number = 1
+    if(compraMultipla == false){
+      novaCompra = 0
+    }
+    return await this.connection.query(
+      `
+        exec showme.efetuarCompra '${foto}','${email}','${cpf}', ${idShow}, ${idIngresso},${qtdComprada},${novaCompra}
+      `,
+    )
+  }
 
   async getInfoCompraPorCliente(email: string): Promise<any> {
     return await this.connection.query(
