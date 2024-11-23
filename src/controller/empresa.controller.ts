@@ -214,7 +214,7 @@ export class EmpresaController {
   }
 
   @Get('ingressosById')
-  async ingressosByid(@Body ('idShow')idShow:number, res:Response){
+  async ingressosByid(@Query ('idShow')idShow:number, res:Response){
     if(idShow == null) res.status(HttpStatus.BAD_REQUEST).json({ mensagem: 'idShow não fornecido'});
     try{
       return await this.empresaService.ingressosDoShow(idShow);
