@@ -172,46 +172,7 @@ export class ClienteService {
   }
 
 
-  async cadastrarCompra(foto,email,cpf,idShow,idIngresso,qtdComprada,compraMultipla){
-    var novaCompra:number = 1
-    if(compraMultipla == false){
-      novaCompra = 0
-    }
-    return await this.connection.query(
-      `
-        exec showme.efetuarCompra '${foto}','${email}','${cpf}', ${idShow}, ${idIngresso},${qtdComprada},${novaCompra}
-      `,
-    )
-  }
-
-  async getDataFromPythonApi(conhecido: string, desconhecido: string) {
-    try {
-      const response = await axios.post(`http://127.0.0.1:8000/reconhecimento/`, {
-        conhecido: conhecido,
-        desconhecido: desconhecido 
-      });
-      console.log(response.data);
-      return response.data;
-    } catch (error) {
-      console.error('Erro ao chamar a API Python:', error);
-      throw new Error('Erro ao chamar a API Python');
-    }
-  }
   
-  async getImgFromBd (email:String){
-    let ret = await this.connection.query(
-      `select foto from showme.Cliente where email = '${email}'`
-    );
-    
-    // Verifique se o resultado contém pelo menos uma linha
-    if (ret.length > 0) {
-      // Acessa o valor da foto da primeira linha do resultado
-      const foto = ret[0].foto;
-      return foto;  // Retorna somente o valor da foto (pode ser Buffer ou string, dependendo de como a foto foi armazenada)
-    } else {
-      return null; // Caso não haja resultado
-    }
-  }
 
   async getInfoCompraPorCliente(email: string): Promise<any> {
     return await this.connection.query(
