@@ -88,7 +88,7 @@ export class AppController {
   }
 
 
-  @Get ('infoCliente')
+  @Get('infoCliente')
   async informarcaoCLiente (@Query ('email') email:string) : Promise<any>
   {
     try {
@@ -208,7 +208,7 @@ export class AppController {
 
 
   @Get('infoCompra')
-  async getInfoCompraCliente(@Res() res:Response, @Body('email') email:string){
+  async getInfoCompraCliente(@Res() res:Response, @Query('email') email:string){
     try {
       res.send( await this.clienteService.getInfoCompraPorCliente(email));
     } catch (error) {
