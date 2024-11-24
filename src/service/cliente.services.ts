@@ -177,6 +177,7 @@ export class ClienteService {
     if(compraMultipla == false){
       novaCompra = 0
     }
+    console.log(foto,email,cpf,idShow,idIngresso,qtdComprada,compraMultipla, novaCompra)
     return await this.connection.query(
       `
         exec showme.efetuarCompra '${foto}','${email}','${cpf}', ${idShow}, ${idIngresso},${qtdComprada},${novaCompra}
