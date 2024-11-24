@@ -127,7 +127,7 @@ export class AppController {
 
 //Email ; CPF --> Transformar isso no Id do cliente ; idDoShow --> Transformar também no id do Ingresso na tabela do BD
   @Post ('comprar')
-  @UseInterceptors(FilesInterceptor('file'))
+  @UseInterceptors(FileInterceptor('file'))
   async comprarIngresso(
     @UploadedFile() file: Express.Multer.File,
     @Res() res: Response,
@@ -139,11 +139,9 @@ export class AppController {
     @Body('compraMultipla') compraMultipla:string
     ): Promise<any>{
     try {
-      if (!file) {
+      if (!file || email == null || cpf == null || idShow == null) {
         return res.status(HttpStatus.BAD_REQUEST).json({ message: 'Dados não enviados' });
       }
-
-//       || email == null || cpf == null || idShow == null
 
       var idShowNovo = parseInt(idShow)
       var idIngressoNovo = parseInt(idIngresso)
