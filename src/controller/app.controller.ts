@@ -133,28 +133,22 @@ export class AppController {
     @Res() res: Response,
     @Body('email') email:string,
     @Body('cpf') cpf:string,
-    @Body('idDoShow') idShow:string,
-    @Body('idIngresso') idIngresso:string,
-    @Body('qtdComprada') qtdComprada:string,
-    @Body('compraMultipla') compraMultipla:string
+    @Body('idDoShow') idShow:number,
+    @Body('idIngresso') idIngresso:number,
+    @Body('qtdComprada') qtdComprada:number,
+    @Body('compraMultipla') compraMultipla:boolean
     ): Promise<any>{
     try {
       if (!file || email == null || cpf == null || idShow == null) {
         return res.status(HttpStatus.BAD_REQUEST).json({ message: 'Dados não enviados' });
       }
 
-      var idShowNovo = parseInt(idShow)
-      var idIngressoNovo = parseInt(idIngresso)
-      var qtdCompradaNovo = parseInt(qtdComprada)
-
-      if (compraMultipla == 'true') {
-        var compraMultiplaNovo = true
-      } else {
-            compraMultiplaNovo = false
-      }
+      console.log(idShow)
+      console.log(qtdComprada)
+      console.log(compraMultipla)
 
       var fotoTransformada = await this.imageService.imageBufferToBase64(file.buffer);
-      await this.clienteService.cadastrarCompra(fotoTransformada,email,cpf,idShowNovo,idIngressoNovo,qtdCompradaNovo,compraMultiplaNovo);
+      await this.clienteService.cadastrarCompra(fotoTransformada,email,cpf,idShow,idIngresso,qtdComprada,compraMultipla);
       res.json({ mensagem: "Compra efetuada" });
     } catch (error) {
       res.status(HttpStatus.INTERNAL_SERVER_ERROR).json({ message: 'Erro de sistema:'+error.message });
