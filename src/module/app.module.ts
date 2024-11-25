@@ -8,12 +8,12 @@ import { ClienteService } from 'src/service/cliente.services';
 import { ShowService } from 'src/service/show.services';
 import { Show } from 'src/models/show.entity';
 import { JwtModule } from '@nestjs/jwt';
-import {PassportModule} from '@nestjs/passport';
+import { PassportModule } from '@nestjs/passport';
 import { Empresa } from 'src/models/empresa.entity';
 import { EmpresaController } from 'src/controller/empresa.controller';
 import { EmpresaService } from 'src/service/empresa.service';
 import { ImageService } from 'src/service/img.service';
-
+import { NestFactory } from '@nestjs/core';
 
 @Module({
   imports: [
@@ -33,14 +33,30 @@ import { ImageService } from 'src/service/img.service';
         },
       }),
     }),
-    TypeOrmModule.forFeature([Cliente,Show,Empresa],),
+    TypeOrmModule.forFeature([Cliente, Show, Empresa]),
     PassportModule.register({ defaultStrategy: 'jwt' }),
     JwtModule.register({
       secret: '!D2p$U5b&Q9w#N8f@G4',
       signOptions: { expiresIn: 'id' },
-    })],
-  
-  controllers: [AppController, ShowController,EmpresaController],
-  providers: [ClienteService, AppService,ShowService,EmpresaService,ImageService],
+    }),
+  ],
+  controllers: [AppController, ShowController, EmpresaController],
+  providers: [ClienteService, AppService, ShowService, EmpresaService, ImageService],
 })
-export class AppModule {}
+export class AppModule {
+  static async configureTimeout(app: any) {
+    // Ajusta o timeout global para todas as requisições
+    app.getHttpServer().setTimeout(30000); // 30 segundos (30.000 milissegundos)
+  }
+}
+
+// Função para iniciar o aplicativo e configurar o timeout
+async function bootstrap() {
+  const app = await NestFactory.create(AppModule);
+  
+  // Configura o timeout do servidor HTTP
+  await AppModule.configureTimeout(app);
+
+  await app.listen(3000);
+}
+bootstrap();
