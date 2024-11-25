@@ -36,7 +36,7 @@ export class EmpresaController {
     @Body ('dataShow') dataShow:string,
     @Body ('foto') foto:string,
     @Body ('hora') hora:string,
-    @Body ('emailEmpresa') emailEmpresa:string
+    @Body ('email') emailEmpresa:string
   ): Promise<any> {
     try {
       const show = await this.empresaService.criarShow(idArtista,nome,local,dataShow,foto,hora,emailEmpresa);

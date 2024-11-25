@@ -137,7 +137,7 @@ export class EmpresaService {
       throw new BadRequestException('Erro ao buscar shows');
     }
   } 
-
+// @idArtista int, @nome varchar(50),@endereco char(80), @dataShow varchar(max), @foto varchar(max),@hora char(5),@emailEmpresa varchar(50)
 
   async infoDosShows(idShow:number)
   {
@@ -158,13 +158,21 @@ export class EmpresaService {
 
   async todosArtistas()
   {
-    const queryResult = await this.connection.query(
+    return await this.connection.query(
       `
-      select * from showme.Artista
-      `,
-      
-    );
-    return queryResult
+        select nome, id from showme.Artista
+      `
+    )
+  }
+
+
+
+  async artistasDoBd(){
+    return await this.connection.query(
+      `
+        select * from showme.Artista
+      `
+    )
   }
 
 
